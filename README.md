@@ -82,3 +82,98 @@ Sin embargo para poder hacer `logout` el usuario debe tener un token válido.
 
     - **Status:** `401 Unauthorized`
     - **Contenido:** `{"message":"Unauthenticated."}`
+
+**Registrar evento**
+---
+
+Permite crear un nuevo evento, asociado al usuario que ha ingresado al sistema.
+
+* **URL**
+
+  `/api/v1/event/register`
+
+* **Método**
+
+  `POST`
+
+* **Parámetros**
+
+    - `name=<nombre del evento>`  
+    - `description=<descripción del evento>`
+    - `location=<lugar donde se llevará a cabo el evento>`
+    
+    El parámetro `location` es opcional, los otros dos son obligatorios.
+
+* **Encabezado:**
+
+    - `Accept: application/json`
+    - `Authorization: Bearer <token>`
+
+* **Respuesta correcta:**
+
+    - **Status:** `200 OK`
+    - **Contenido:** `{
+        "status": 1,
+        "message": "Event has been registered",
+        "event_id": <identificador del nuevo evento>
+      }`
+
+* **Respuesta errónea:**
+
+    - **Status:** `401 Unauthorized`
+    - **Contenido:** `{"message":"Unauthenticated."}`
+
+**Listar todos los evento**
+---
+
+Permite conocer todos los eventos existentes en la base de datos bajo la propiedad
+del usuario actualmente logueado en el sistema.
+
+* **URL**
+
+  `/api/v1/event/list`
+
+* **Método**
+
+  `GET`
+
+* **Parámetros**
+
+    Ninguno
+  
+* **Encabezado:**
+
+    - `Accept: application/json`
+    - `Authorization: Bearer <token>`
+
+* **Respuesta correcta:**
+
+    - **Status:** `200 OK`
+    - **Contenido:** 
+      ```json
+        {
+        "status": 1,
+        "message": "Events",
+        "data": [
+        {
+        "id": 1,
+        "name": "Encuentro Nacional De Investigadores",
+        "description": "Vamos a realizar un evento interesante lleno de cosas aun mas interesantes. Sean todos bienvenidos.",
+        "location": "Bogotá, Colombia",
+        "user_id": "5"
+        },
+        {
+        "id": 2,
+        "name": "Reunión Nacional De Semilleros De Colombia",
+        "description": "Este es el encuentro más importante de todos los tiempos. No se que vamos a hacer ahora.",
+        "location": "Cartagena, Colombia",
+        "user_id": "5"
+        }
+        ],
+        "organization": "Universidad Ean"
+        }      
+      ```
+* **Respuesta errónea:**
+
+    - **Status:** `401 Unauthorized`
+    - **Contenido:** `{"message":"Unauthenticated."}`
