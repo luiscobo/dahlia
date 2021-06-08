@@ -20,4 +20,12 @@ class Evento extends Model
         'location',
         'user_id'
     ];
+
+    /**
+     * La lista de contactos que participan en el evento
+     */
+    public function contacts()
+    {
+        return $this->belongsToMany(Contact::class);
+    }
 }

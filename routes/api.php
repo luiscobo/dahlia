@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\Api\V1\EventController;
+use App\Http\Controllers\Api\V1\ContactController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -31,5 +32,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     // Para registrar un nuevo evento
     Route::post('v1/event/register', [EventController::class, 'register']);
+
+    // Para registrar un nuevo contacto en un evento
+    Route::post('v1/contact/register', [ContactController::class, 'add_contact_to_event']);
 
 });
