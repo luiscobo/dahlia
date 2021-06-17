@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\Api\V1\EventController;
 use App\Http\Controllers\Api\V1\ContactController;
+use App\Http\Controllers\Api\V1\ImageUploadController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -32,6 +33,12 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     // Para registrar un nuevo evento
     Route::post('v1/event/register', [EventController::class, 'register']);
+
+    // Para asignarle una imagen a un evento
+    Route::post('v1/event/set_image', [ImageUploadController::class, 'upload_event_image']);
+
+    // Para descargar la imagen asociada a un evento
+    Route::get('v1/event/get_image', [ImageUploadController::class, 'download_event_image']);
 
     // Para registrar un nuevo contacto en un evento
     Route::post('v1/contact/register', [ContactController::class, 'add_contact_to_event']);

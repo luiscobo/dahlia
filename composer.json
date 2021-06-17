@@ -2,7 +2,7 @@
     "name": "laravel/laravel",
     "type": "project",
     "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
+    "keywords": ["Semiselleros", "Universidad Ean", "BackEnd", "Laravel"],
     "license": "MIT",
     "require": {
         "php": "^7.3|^8.0",
