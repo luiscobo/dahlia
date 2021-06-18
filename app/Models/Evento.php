@@ -18,7 +18,9 @@ class Evento extends Model
         'name',
         'description',
         'location',
-        'user_id'
+        'user_id',
+        'dateInit',
+        'dateEnd'
     ];
 
     /**

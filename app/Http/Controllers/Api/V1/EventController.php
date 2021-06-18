@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\EventoCollection;
 use App\Models\Evento;
+use Carbon\Carbon;
+use DateTime;
 use Illuminate\Http\Request;
 
 class EventController extends Controller
@@ -24,10 +26,23 @@ class EventController extends Controller
         // Ahora creamos el nuevo registro de los eventos
         $event = new Evento();
 
+        // Llenamos los diversos campos del evento
         $event->name = ucwords($request->name);
         $event->description = $request->description;
         $event->location = $request->location ?? '';
         $event->user_id = $user_id;
+        if ($request->filled('date_init')) {
+            $event->dateInit = DateTime::createFromFormat('d/m/Y', $request->date_init);
+        }
+        else {
+            $event->dateInit = Carbon::now();
+        }
+        if ($request->filled('date_end')) {
+            $event->dateEnd = DateTime::createFromFormat('d/m/Y', $request->date_end);
+        }
+        else {
+            $event->dateEnd = Carbon::now();
+        }
 
         // Lo guardamos en la base de datos
         $event->save();

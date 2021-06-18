@@ -101,8 +101,10 @@ Permite crear un nuevo evento, asociado al usuario que ha ingresado al sistema.
     - `name=<nombre del evento>`  
     - `description=<descripción del evento>`
     - `location=<lugar donde se llevará a cabo el evento>`
+    - `date_init=dia/mes/año`
+    - `date_end=dia/mes/año`
     
-    El parámetro `location` es opcional, los otros dos son obligatorios.
+    El parámetro `location` es opcional, así como las fechas, los otros dos son obligatorios.
 
 * **Encabezado:**
 

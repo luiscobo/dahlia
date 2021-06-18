@@ -19,7 +19,9 @@ class EventoResource extends JsonResource
             'name' => ucwords($this->name),
             'description' => $this->description,
             'location' => $this->location,
-            'user_id' => $this->user_id
+            'user_id' => $this->user_id,
+            'date_init' => $this->dateInit,
+            'date_end' => $this->dateEnd
         ];
     }
 }
