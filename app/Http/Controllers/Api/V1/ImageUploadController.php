@@ -59,4 +59,53 @@ class ImageUploadController extends Controller
         $type = Storage::mimeType($imagen);
         return Storage::response($imagen, "imagen", ['Content-Type' => $type]);
     }
+
+    // Permite guardar una imagen de un evento desde el cliente
+    public function upload_speaker_image(Request $request)
+    {
+        // Primero validamos los elementos del requerimiento
+        $request->validate([
+            'id'    => 'required|exists:speaker',
+            'image' => 'required'
+        ]);
+
+        // Ahora obtenemos el archivo con la imagen y lo guardamos en la carpeta correspondiente
+        $speaker_id = $request->id;
+        $result = $request->file('image')->store('images/speakers');
+
+        // Ahora buscamos el evento que tiene el identificador dado
+        $speaker = Speaker::find($speaker_id);
+        $speaker->image = $result;
+        $speaker->save();
+
+        // Enviamos la respuesta de regreso al cliente
+        return response()->json([
+            'status' => 1,
+            'message' => 'Image uploded successfully',
+            'event_id' => $speaker_id
+        ]);
+    }
+
+    // Permite obtener el archivo de imagen asociado a un evento
+    public function download_speaker_image(Request $request)
+    {
+        // Primero validamos los elementos del requerimiento
+        $request->validate([
+            'id' => 'required|exists:speaker,id'
+        ]);
+
+        // Ahora traemos la ruta donde se encuentra la imagen del evento
+        $speaker_id = $request->id;
+        $speaker = Speaker::findOrFail($speaker_id);
+        $imagen = $speaker->image;
+
+        // Si la imagen no existe, abortamos
+        if (!Storage::exists($imagen)) {
+            abort(404);
+        }
+
+        // Enviamos la imagen al cliente
+        $type = Storage::mimeType($imagen);
+        return Storage::response($imagen, "imagen", ['Content-Type' => $type]);
+    }
 }

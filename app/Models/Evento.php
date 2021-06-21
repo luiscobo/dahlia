@@ -30,4 +30,12 @@ class Evento extends Model
     {
         return $this->belongsToMany(Contact::class);
     }
+
+    /**
+     * La lista de conferencistas del evento
+     */
+    public function speakers()
+    {
+        return $this->belongsToMany(Speaker::class);
+    }
 }
