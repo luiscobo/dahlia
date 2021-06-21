@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Models\Evento;
 
+use App\Models\Speaker;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -82,7 +83,7 @@ class ImageUploadController extends Controller
         return response()->json([
             'status' => 1,
             'message' => 'Image uploded successfully',
-            'event_id' => $speaker_id
+            'speaker_id' => $speaker_id
         ]);
     }
 
