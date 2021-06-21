@@ -49,6 +49,7 @@ class SpeakerController extends Controller
         $request->validate([
             'last_name' => 'required|string',
             'first_name' => 'required|string',
+            'type' => 'required|string',
             'email' => 'required|email|unique:contacts'
         ]);
 
@@ -57,6 +58,7 @@ class SpeakerController extends Controller
         $speaker->last_name = ucwords(strtolower(trim($request->last_name)));
         $speaker->first_name = ucwords(strtolower(trim($request->first_name)));
         $speaker->email = strtolower(trim($request->email));
+        $speaker->type = strtoupper(trim($request->type));
         $speaker->telephone = $request->telephone ?? '';
         $speaker->image = '';
         $speaker->facebook = $request->facebook ?? '';

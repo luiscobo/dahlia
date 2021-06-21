@@ -65,7 +65,7 @@ class ImageUploadController extends Controller
     {
         // Primero validamos los elementos del requerimiento
         $request->validate([
-            'id'    => 'required|exists:speaker',
+            'id'    => 'required|exists:speakers',
             'image' => 'required'
         ]);
 
@@ -91,7 +91,7 @@ class ImageUploadController extends Controller
     {
         // Primero validamos los elementos del requerimiento
         $request->validate([
-            'id' => 'required|exists:speaker,id'
+            'id' => 'required|exists:speakers,id'
         ]);
 
         // Ahora traemos la ruta donde se encuentra la imagen del evento
