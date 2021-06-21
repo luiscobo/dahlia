@@ -30,6 +30,9 @@ Route::get('v1/event/get_image', [ImageUploadController::class, 'download_event_
 // Para descargar la imagen asociada a un speaker
 Route::get('v1/speaker/get_image', [ImageUploadController::class, 'download_speaker_image']);
 
+// Obtener una lista con los speakers del evento
+Route::get('v1/speaker/list', [SpeakerController::class, 'list']);
+
 // Todas las siguiente rutas necesitan pasar por una autenticación previa
 Route::group(['middleware' => ['auth:sanctum']], function () {
     // Para conocer la información del usuario que está logeado
@@ -49,9 +52,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     // Para registrar un nuevo speaker o conferencista en el evento dado
     Route::post('v1/speaker/register', [SpeakerController::class, 'store']);
-
-    // Obtener una lista con los speakers del evento
-    Route::get('v1/speaker/list', [SpeakerController::class, 'list']);
 
     // Para asignarle una imagen a un speaker
     Route::post('v1/speaker/set_image', [ImageUploadController::class, 'upload_speaker_image']);
