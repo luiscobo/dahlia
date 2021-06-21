@@ -47,7 +47,6 @@ class SpeakerController extends Controller
     {
         // Primero, validamos los datos de entrada
         $request->validate([
-            'event_id' => 'required|exists:eventos,id',
             'last_name' => 'required|string',
             'first_name' => 'required|string',
             'email' => 'required|email|unique:contacts'
@@ -67,14 +66,14 @@ class SpeakerController extends Controller
         $speaker->save();
 
         // Y ahora lo vinculamos al evento
-        $event_id = intval($request->input('event_id'));
-        $event = Evento::find($event_id);
-        $speaker->eventos()->attach($event);
+        // $event_id = intval($request->input('event_id'));
+        // $event = Evento::find($event_id);
+        // $speaker->eventos()->attach($event);
 
         // Retornamos el estado de la respuesta
         return response()->json([
             'status' => 1,
-            'message' => 'Speaker had been created',
+            'message' => 'Speaker has been created',
             'speaker_id' => $speaker->id
         ]);
     }
