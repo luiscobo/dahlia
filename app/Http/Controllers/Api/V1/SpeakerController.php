@@ -30,10 +30,7 @@ class SpeakerController extends Controller
             return new SpeakerCollection($evento->speakers()->get());
         }
         else {
-            return response()->json([
-                'status' => 'error',
-                'description' => 'Missing required parameter "event_id"'
-            ], 422);
+            return new SpeakerCollection(Speaker::all());
         }
     }
 
