@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\EventoCollection;
+use App\Http\Resources\EventoResource;
 use App\Models\Evento;
 use Carbon\Carbon;
 use DateTime;
+
 use Illuminate\Http\Request;
 
 class EventController extends Controller
@@ -27,7 +29,7 @@ class EventController extends Controller
         $event = new Evento();
 
         // Llenamos los diversos campos del evento
-        $event->name = ucwords($request->name);
+        $event->name = ucwords(strtolower($request->name));
         $event->description = $request->description;
         $event->location = $request->location ?? '';
         $event->user_id = $user_id;
@@ -76,6 +78,65 @@ class EventController extends Controller
             'status' => 1,
             'message' => 'User Profile Information',
             'data' => auth()->user()
+        ]);
+    }
+
+    // Permite obtener la información del evento
+    public function show($event_id)
+    {
+        // Obtenemos el objeto Evento asociado al $event_id que se pasa como parámetro
+        $evento = Evento::find($event_id);
+
+        if ($evento) {
+            return response()->json([
+                'status' => 1,
+                'message' => 'Event ' . $event_id . ' information OK',
+                'data' => new EventoResource($evento)
+            ]);
+        }
+        else {
+            return response()->json([
+                'status' => 'error',
+                'message' => "Event $event_id does not exists in the database",
+                'id' => $event_id
+            ], 422);
+        }
+    }
+
+    // Esta operación guarda la información de los datos que envía el usuario
+    public function update(Request $request)
+    {
+        // Validamos los datos que acaba de enviar el usuario
+        $request->validate(['event_id' => 'required|integer|exists:eventos,id']);
+
+        // Ahora obtenemos los datos que acaba de enviar el usuario
+        $event_id = $request->event_id;
+        $evento = Evento::find($request->event_id);
+
+        if ($request->filled('name')) {
+            $evento->name = ucwords(strtolower($request->name));
+        }
+        if ($request->filled('description')) {
+            $evento->name = $request->description;
+        }
+        if ($request->filled('location')) {
+            $evento->name = ucwords(strtolower($request->location));
+        }
+        if ($request->filled('date_init')) {
+            $evento->dateInit = DateTime::createFromFormat('d/m/Y', $request->date_init);
+        }
+        if ($request->filled('date_end')) {
+            $evento->dateEnd = DateTime::createFromFormat('d/m/Y', $request->date_end);
+        }
+
+        // Guardamos el texto en la base de datos
+        $evento->save();
+
+        // Enviamos el mensaje de respuesta
+        return response()->json([
+            'status' => 1,
+            'message' => "Event $event_id was updated successfully",
+            'data' => new EventoResource($evento)
         ]);
     }
 }

@@ -27,11 +27,15 @@ Route::get('logout', [
 // Para descargar la imagen asociada a un evento
 Route::get('v1/event/get_image', [ImageUploadController::class, 'download_event_image']);
 
+// Para obtener la informacion de un evento
+Route::get('v1/event/get_information/{id}', [EventController::class, 'show']);
+
 // Para descargar la imagen asociada a un speaker
 Route::get('v1/speaker/get_image', [ImageUploadController::class, 'download_speaker_image']);
 
 // Obtener una lista con los speakers del evento
 Route::get('v1/speaker/list', [SpeakerController::class, 'list']);
+
 
 // Todas las siguiente rutas necesitan pasar por una autenticación previa
 Route::group(['middleware' => ['auth:sanctum']], function () {
@@ -46,6 +50,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     // Para asignarle una imagen a un evento
     Route::post('v1/event/set_image', [ImageUploadController::class, 'upload_event_image']);
+
+    // Para almacenar la información de un evento
+    Route::post('v1/event/update', [EventController::class, 'update']);
 
     // Para registrar un nuevo contacto en un evento
     Route::post('v1/contact/register', [ContactController::class, 'add_contact_to_event']);
