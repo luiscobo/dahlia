@@ -53,7 +53,7 @@ class ImageUploadController extends Controller
 
         // Si la imagen no existe, abortamos
         if (!Storage::exists($imagen)) {
-            abort(404);
+            $imagen = "image/events/default.jpg";
         }
 
         // Enviamos la imagen al cliente

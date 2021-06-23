@@ -117,10 +117,10 @@ class EventController extends Controller
             $evento->name = ucwords(strtolower($request->name));
         }
         if ($request->filled('description')) {
-            $evento->name = $request->description;
+            $evento->description = $request->description;
         }
         if ($request->filled('location')) {
-            $evento->name = ucwords(strtolower($request->location));
+            $evento->location = ucwords(strtolower($request->location));
         }
         if ($request->filled('date_init')) {
             $evento->dateInit = DateTime::createFromFormat('d/m/Y', $request->date_init);
