@@ -5,7 +5,6 @@ use App\Http\Controllers\Api\V1\EventController;
 use App\Http\Controllers\Api\V1\ContactController;
 use App\Http\Controllers\Api\V1\ImageUploadController;
 use App\Http\Controllers\Api\V1\SpeakerController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -57,10 +56,16 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     // Para registrar un nuevo contacto en un evento
     Route::post('v1/contact/register', [ContactController::class, 'add_contact_to_event']);
 
+    // Para eliminar un contacto de un evento
+    Route::delete('v1/contact/delete/{contact_id}', [ContactController::class, "destroy"]);
+
     // Para registrar un nuevo speaker o conferencista en el evento dado
     Route::post('v1/speaker/register', [SpeakerController::class, 'store']);
 
     // Para asignarle una imagen a un speaker
     Route::post('v1/speaker/set_image', [ImageUploadController::class, 'upload_speaker_image']);
+
+    // Para eliminar un speaker del sistema
+    Route::delete('v1/speaker/delete/{id}', [SpeakerController::class, "destroy"]);
 
 });

@@ -12,8 +12,6 @@ class SpeakerController extends Controller
 {
     /**
      * Display a listing of the speakers.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function list(Request $request)
     {
@@ -114,11 +112,35 @@ class SpeakerController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Speaker  $speaker
+     * @param   $speaker_id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Speaker $speaker)
+    public function destroy($speaker_id)
     {
-        //
+        if (is_numeric($speaker_id)) {
+            $speaker = Speaker::find(intval($speaker_id));
+            if ($speaker) {
+                $speaker->eventos()->detach();
+                $speaker->delete();
+                return response()->json([
+                    'status' => 1,
+                    'message' => "Speaker $speaker_id deleted",
+                    'speaker_id' => $speaker_id,
+                ]);
+            }
+            else {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => "Speaker with identifier $speaker_id does not exist",
+                    'speaker_id' => $speaker_id
+                ], 422);
+            }
+        }
+        return response()->json([
+            "status" => "error",
+            "message" => "Identifier $speaker_id does not have right format",
+            "speaker_id" => $speaker_id,
+        ], 422);
     }
+
 }

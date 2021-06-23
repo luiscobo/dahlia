@@ -41,4 +41,32 @@ class ContactController extends Controller
             'contact_id' => $contacto->id
         ]);
     }
+
+    // Vamos a utilizar este método para eliminar un contacto del evento
+    public function destroy($contact_id)
+    {
+        if (is_numeric($contact_id)) {
+            $contact = Contact::find(intval($contact_id));
+            if ($contact) {
+                $contact->eventos()->detach();
+                $contact->delete();
+                return response()->json([
+                    'status' => 1,
+                    'message' => "Contact $contact_id deleted",
+                    'contact_id' => $contact_id,
+                ]);
+            }
+            else {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => "Contact with identifier $contact_id does not exist",
+                ], 422);
+            }
+        }
+        return response()->json([
+            "status" => "error",
+            "message" => "Identifier $contact_id does not have right format",
+            "contact_id" => $contact_id,
+        ], 422);
+    }
 }
