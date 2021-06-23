@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use DateTime;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class EventoResource extends JsonResource

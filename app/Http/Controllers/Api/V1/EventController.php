@@ -90,7 +90,7 @@ class EventController extends Controller
         if ($evento) {
             return response()->json([
                 'status' => 1,
-                'message' => 'Event ' . $event_id . ' information OK',
+                'message' => "Event $event_id information OK",
                 'data' => new EventoResource($evento)
             ]);
         }
@@ -136,7 +136,7 @@ class EventController extends Controller
         return response()->json([
             'status' => 1,
             'message' => "Event $event_id was updated successfully",
-            'data' => new EventoResource($evento)
+            'data' =>  new EventoResource($evento)
         ]);
     }
 }
