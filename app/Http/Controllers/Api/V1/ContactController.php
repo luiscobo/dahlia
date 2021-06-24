@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ContactResource;
 use App\Models\Contact;
 use App\Models\Evento;
 use Illuminate\Http\Request;
@@ -67,6 +68,46 @@ class ContactController extends Controller
             "status" => "error",
             "message" => "Identifier $contact_id does not have right format",
             "contact_id" => $contact_id,
+        ], 422);
+    }
+
+    // Permite obtener el contacto, dado el evento
+    public function get_contact_by_event_id($event_id)
+    {
+        // Primero, verificamos que el evento exista
+        if (is_numeric($event_id)) {
+            $event = Evento::find($event_id);
+            if ($event) {
+                // AHora que estamos seguros que existe el evento, buscamos el contacto
+                $contact = $event->contacts()->first();
+                if ($contact) {
+                    return response()->json([
+                        'status' => 1,
+                        'message' => 'OK',
+                        'event_id' => $event_id,
+                        'data' => new ContactResource($contact)
+                    ]);
+                }
+                else {
+                    return response()->json([
+                       'status' => "error",
+                       'message' => "Event $event_id does not have a contact",
+                       'event_id' => $event_id
+                    ], 422);
+                }
+            }
+            else {
+                return response()->json([
+                    'status' => "error",
+                    'message' => "Event $event_id does not exist",
+                    'event_id' => $event_id
+                ], 422);
+            }
+        }
+        return response()->json([
+            'status' => "error",
+            'message' => "Event $event_id does not have a right format",
+            'event_id' => $event_id
         ], 422);
     }
 }

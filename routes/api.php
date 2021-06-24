@@ -29,6 +29,9 @@ Route::get('v1/event/get_image', [ImageUploadController::class, 'download_event_
 // Para obtener la informacion de un evento
 Route::get('v1/event/get_information/{id}', [EventController::class, 'show']);
 
+// Permite obtener el contacto del evento en cuestion
+Route::get('v1/event/id:{id}/get_contact', [ContactController::class, 'get_contact_by_event_id']);
+
 // Para descargar la imagen asociada a un speaker
 Route::get('v1/speaker/get_image', [ImageUploadController::class, 'download_speaker_image']);
 
