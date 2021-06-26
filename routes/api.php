@@ -70,6 +70,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     // Para cambiar la imagen del contacto, basado en el identificador del contacto
     Route::post('v1/contact/set_image', [ContactController::class, "set_image"]);
 
+    // Para actualizar la información del contacto, basado en el identificador del evento
+    Route::post('v1/event/{id}/update_contact', [ContactController::class, "update"]);
+
     // Para registrar un nuevo speaker o conferencista en el evento dado
     Route::post('v1/speaker/register', [SpeakerController::class, 'store']);
 

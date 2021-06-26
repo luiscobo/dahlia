@@ -193,4 +193,53 @@ class ContactController extends Controller
             "contact_id" => $contact_id,
         ], 422);
     }
+
+    // Actualizar la información del contacto
+    public function update(Request $request, $id_evento)
+    {
+        // Primero validamos los elementos del requerimiento
+        $request->validate([
+            'last_name' => 'required',
+            'first_name' => 'required',
+            'email' => 'required|email|unique:contacts',
+            'telephone' => 'required|integer'
+        ]);
+
+        // Ahora obtenemos el evento con el identificador dado
+        $evento = Evento::find($id_evento);
+        if (!$evento) {
+            return response()->json([
+                'status' => 1,
+                'message' => "Event with identifier $id_evento does not exist",
+                'event_id' => $id_evento
+            ]);
+        }
+
+        $contacto = $evento->contacts()->first();
+        $isnew = false;
+
+        if (!$contacto) {
+            $contacto = new Contact();
+            $isnew = true;
+        }
+
+        $contacto->lastName = trim(strtoupper($request->input('last_name')));
+        $contacto->firstName = trim(strtoupper($request->input('first_name')));
+        $contacto->email = $request->input('email');
+        $contacto->telephone = $request->input('telephone', '');
+        $contacto->image = '/images/contacts/default.png';
+        $contacto->save();
+
+        if ($isnew) {
+            $contacto->eventos()->attach($evento);
+        }
+
+        return response()->json([
+            'status' => 1,
+            'message' => "Contact $contacto->id updated",
+            'event_id' => $id_evento,
+            'data' => new ContactResource($contacto)
+        ]);
+
+    }
 }
