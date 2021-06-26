@@ -30,7 +30,7 @@ Route::get('v1/event/get_image', [ImageUploadController::class, 'download_event_
 Route::get('v1/event/get_information/{id}', [EventController::class, 'show']);
 
 // Permite obtener el contacto del evento en cuestion
-Route::get('v1/event/id:{id}/get_contact', [ContactController::class, 'get_contact_by_event_id']);
+Route::get('v1/event/{id}/contact', [ContactController::class, 'get_contact_by_event_id']);
 
 // Para descargar la imagen asociada a un speaker
 Route::get('v1/speaker/get_image', [ImageUploadController::class, 'download_speaker_image']);
@@ -38,6 +38,11 @@ Route::get('v1/speaker/get_image', [ImageUploadController::class, 'download_spea
 // Obtener una lista con los speakers del evento
 Route::get('v1/speaker/list', [SpeakerController::class, 'list']);
 
+// Obtener la imagen del contacto, basandonos en el identificador del contacto
+Route::get('v1/contact/get_image/{id}', [ContactController::class, 'get_image']);
+
+// Obtener la información del contacto, a partir del identificador del contacto
+Route::get('v1/contact/{id}', [ContactController::class, 'show']);
 
 // Todas las siguiente rutas necesitan pasar por una autenticación previa
 Route::group(['middleware' => ['auth:sanctum']], function () {
@@ -61,6 +66,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     // Para eliminar un contacto de un evento
     Route::delete('v1/contact/delete/{contact_id}', [ContactController::class, "destroy"]);
+
+    // Para cambiar la imagen del contacto, basado en el identificador del contacto
+    Route::post('v1/contact/set_image', [ContactController::class, "set_image"]);
 
     // Para registrar un nuevo speaker o conferencista en el evento dado
     Route::post('v1/speaker/register', [SpeakerController::class, 'store']);

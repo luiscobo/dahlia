@@ -110,4 +110,87 @@ class ContactController extends Controller
             'event_id' => $event_id
         ], 422);
     }
+
+    // Permite establecer la imagen de un contacto, basandonos en el identificador del contacto
+    public function set_image(Request $request)
+    {
+        // Primero validamos los elementos del requerimiento
+        $request->validate([
+            'id'    => 'required|exists:contacts',
+            'image' => 'required'
+        ]);
+
+        // Ahora obtenemos el archivo con la imagen y lo guardamos en la carpeta correspondiente
+        $contact_id = $request->id;
+        $result = $request->file('image')->store('images/contacts');
+
+        // Ahora buscamos el evento que tiene el identificador dado
+        $contact = Contact::find($contact_id);
+        $contact->image = $result;
+        $contact->save();
+
+        // Enviamos la respuesta de regreso al cliente
+        return response()->json([
+            'status' => 1,
+            'message' => 'Image uploded successfully',
+            'contact_id' => $contact_id
+        ]);
+    }
+
+    // Permite obtener la imagen asociada al contacto
+    public function get_image($contact_id)
+    {
+        // Ahora traemos la ruta donde se encuentra la imagen del contacto
+        if (is_numeric($contact_id)) {
+            $contact = Contact::findOrFail($contact_id);
+            $imagen = $contact->image;
+
+            // Si la imagen no existe, abortamos
+            if (!Storage::exists($imagen)) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => "Contact with identifier $contact_id does not have an image",
+                    'contact_id' => $contact_id
+                ], 422);
+            }
+
+            // Enviamos la imagen al cliente
+            $type = Storage::mimeType($imagen);
+            return Storage::response($imagen, "imagen", ['Content-Type' => $type]);
+        }
+
+        // Hay un error en el tipo o formato del identificador del contacto
+        return response()->json([
+            "status" => "error",
+            "message" => "Identifier $contact_id does not have right format",
+            "contact_id" => $contact_id,
+        ], 422);
+    }
+
+    // Obtener la información del contacto por identificador
+    public function show($contact_id)
+    {
+        if (is_numeric($contact_id)) {
+            $contact = Contact::find($contact_id);
+            if ($contact)
+            {
+                return response()->json([
+                    "status" => 1,
+                    "data" => new ContactResource($contact)
+                ]);
+            }
+            return response()->json([
+                "status" => "error",
+                "message" => "Identifier $contact_id does not exist in the system",
+                "contact_id" => $contact_id
+            ], 422);
+        }
+
+        // Hay un error en el tipo o formato del identificador del contacto
+        return response()->json([
+            "status" => "error",
+            "message" => "Identifier $contact_id does not have right format",
+            "contact_id" => $contact_id,
+        ], 422);
+    }
 }
