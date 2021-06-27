@@ -139,4 +139,46 @@ class EventController extends Controller
             'data' =>  new EventoResource($evento)
         ]);
     }
+
+    public function destroy($event_id)
+    {
+        // Primero verificamos que el evento exista
+        if (!is_numeric($event_id)) {
+            return response()->json([
+                'status' => 'error',
+                'message' => "Identifier $event_id does not have the right format",
+                'event_id' => "$event_id"
+            ], 422);
+        }
+
+        $event = Evento::find($event_id);
+        if (!$event) {
+            return response()->json([
+                'status' => 'error',
+                'message' => "Event with identifier $event_id does not exist in the database",
+                'event_id' => "$event_id"
+            ]);
+        }
+
+        // Borramos el evento con el identificador dado
+        $event->speakers()->detach();
+
+        // Obenemos el contacto asociado con el evento a eliminar
+        $contact = $event->contacts()->first();
+        if ($contact) {
+            $contact->delete();
+        }
+        $event->contacts()->detach();
+
+        // Borramos el evento de la BD
+        $event->delete();
+
+        // Enviamos la respuesta
+        return response()->json([
+            'status' => 1,
+            'message' => "Event with identifier $event_id has been deleted",
+            'event_id' => "$event_id"
+        ]);
+
+    }
 }

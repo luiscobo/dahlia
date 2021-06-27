@@ -82,4 +82,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     // Para eliminar un speaker del sistema
     Route::delete('v1/speaker/delete/{id}', [SpeakerController::class, "destroy"]);
 
+    // Para eliminar un evento del sistema
+    Route::delete('v1/event/{id}', [EventController::class, "destroy"]);
+
 });
