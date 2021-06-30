@@ -20,7 +20,8 @@ class Speaker extends Model
         'facebook',
         'linkedin',
         'instagram',
-        'twitter'
+        'twitter',
+        'type'
     ];
 
     /**

@@ -45,7 +45,7 @@ class SpeakerController extends Controller
             'last_name' => 'required|string',
             'first_name' => 'required|string',
             'type' => 'required|string',
-            'email' => 'required|email|unique:contacts'
+            'email' => 'required|email|unique:speakers'
         ]);
 
         // Ahora, almacenamos los datos en la base de datos

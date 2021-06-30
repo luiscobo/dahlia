@@ -209,7 +209,7 @@ class ContactController extends Controller
         $evento = Evento::find($id_evento);
         if (!$evento) {
             return response()->json([
-                'status' => 1,
+                'status' => 'error',
                 'message' => "Event with identifier $id_evento does not exist",
                 'event_id' => $id_evento
             ]);

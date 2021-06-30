@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\LoginController;
+use App\Http\Controllers\Api\V1\AgendaController;
 use App\Http\Controllers\Api\V1\EventController;
 use App\Http\Controllers\Api\V1\ContactController;
 use App\Http\Controllers\Api\V1\ImageUploadController;
@@ -84,5 +85,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     // Para eliminar un evento del sistema
     Route::delete('v1/event/{id}', [EventController::class, "destroy"]);
+
+    // Para agregar un elemento de agenda a un evento
+    Route::post('v1/event/{id}/add_agenda', [AgendaController::class, "store"]);
 
 });
