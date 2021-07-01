@@ -179,6 +179,59 @@ class EventController extends Controller
             'message' => "Event with identifier $event_id has been deleted",
             'event_id' => "$event_id"
         ]);
+    }
 
+    // Permite obtener los requisitos de inscripción del evento
+    public function get_registration_requirements($id)
+    {
+        // Obtenemos la información del evento
+        $evento = Evento::find($id);
+        if (!$evento)
+        {
+            return response()->json([
+                'status' => 'error',
+                'message' => "Event with identifier $id does not exist in the database",
+                'event_id' => "$id"
+            ]);
+        }
+
+        // Ahora retornamos los requisitos
+        return response()->json([
+            'status' => 1,
+            'message' => 'All is OK!',
+            'data' => $evento->registration_requirements,
+            'event_id' => "$id"
+        ]);
+    }
+
+    // Cambia los requisitos de inscripción de un evento
+    public function set_registration_requirements(Request $request, $id)
+    {
+        // Validamos los datos de entrada
+        $request->validate([
+            'requirements' => 'required|string'
+        ]);
+
+        // Obtenemos la información del evento
+        $evento = Evento::find($id);
+        if (!$evento)
+        {
+            return response()->json([
+                'status' => 'error',
+                'message' => "Event with identifier $id does not exist in the database",
+                'event_id' => "$id"
+            ]);
+        }
+
+        // Cambiamos los requerimientos del evento
+        $evento->registration_requirements = $request->requirements;
+        $evento->save();
+
+        // Retornamos la respuesta
+        return response()->json([
+            'status' => 1,
+            'message' => "Event with identifier $id has been updated",
+            'event_id' => $id
+        ]);
     }
 }

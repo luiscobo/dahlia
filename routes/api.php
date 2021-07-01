@@ -45,6 +45,9 @@ Route::get('v1/contact/get_image/{id}', [ContactController::class, 'get_image'])
 // Obtener la información del contacto, a partir del identificador del contacto
 Route::get('v1/contact/{id}', [ContactController::class, 'show']);
 
+// Obtener los requisitos de inscripción del evento
+Route::get('v1/event/{id}/registration_requirements', [EventController::class, "get_registration_requirements"]);
+
 // Todas las siguiente rutas necesitan pasar por una autenticación previa
 Route::group(['middleware' => ['auth:sanctum']], function () {
     // Para conocer la información del usuario que está logeado
@@ -91,5 +94,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     // Para agregarle un conferencista a una agenda
     Route::post('v1/event/{id_evento}/agenda/{id_agenda}/add_speaker/{id_speaker}', [AgendaController::class, "add_speaker"]);
+
+    // Para almacenar o cambiar los requisitos de inscripción de un evento
+    Route::post('v1/event/{id}/registration_requirements', [EventController::class, "set_registration_requirements"]);
 
 });
