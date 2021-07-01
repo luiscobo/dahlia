@@ -89,4 +89,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     // Para agregar un elemento de agenda a un evento
     Route::post('v1/event/{id}/add_agenda', [AgendaController::class, "store"]);
 
+    // Para agregarle un conferencista a una agenda
+    Route::post('v1/event/{id_evento}/agenda/{id_agenda}/add_speaker/{id_speaker}', [AgendaController::class, "add_speaker"]);
+
 });
