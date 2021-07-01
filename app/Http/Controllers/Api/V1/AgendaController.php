@@ -15,7 +15,7 @@ class AgendaController extends Controller
     {
         // Primero validamos lo que nos envía el cliente
         $request->validate([
-            'day' => 'required|date_format:d/m/Y',
+            'day' => 'required|date_format:j/n/Y',
             'hour_init' => 'required|date_format:H:i',
             'hour_end' => 'required|date_format:H:i',
             'title' => 'required|string'
